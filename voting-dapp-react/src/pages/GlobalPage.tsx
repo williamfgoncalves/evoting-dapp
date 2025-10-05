@@ -68,7 +68,14 @@ export function GlobalPage() {
   return (
     <div style={{ padding: 16 }}>
       <h2>Eleições</h2>
-      {sorted.length === 0 && <div>Nenhuma eleição criada.</div>}
+      {sorted.length === 0 && (
+        <div style={{ padding: 24, textAlign: "center", color: "#666", border: "1px dashed #ddd", borderRadius: 8 }}>
+          Nenhuma eleição criada ainda.
+          <div style={{ marginTop: 8 }}>
+            <Link to="/admin">Criar primeira eleição</Link>
+          </div>
+        </div>
+      )}
       <ul style={{ listStyle: "none", paddingLeft: 0 }}>
         {sorted.map((e) => (
           <li key={e.address} style={{ marginBottom: 16, border: "1px solid #eee", padding: 12, borderRadius: 8 }}>

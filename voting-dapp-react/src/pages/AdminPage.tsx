@@ -72,10 +72,16 @@ export function AdminPage() {
           <div style={{ flex: 1 }}>
             <label>Início</label><br />
             <input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} style={{ width: "100%" }} />
+            <div style={{ fontSize: 12, color: "#777" }}>
+              Dica: os horários são no seu fuso local e convertidos para timestamp UNIX on-chain.
+            </div>
           </div>
           <div style={{ flex: 1 }}>
             <label>Fim</label><br />
             <input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} style={{ width: "100%" }} />
+            <div style={{ fontSize: 12, color: "#777" }}>
+              Dica: os horários são no seu fuso local e convertidos para timestamp UNIX on-chain.
+            </div>
           </div>
         </div>
 
