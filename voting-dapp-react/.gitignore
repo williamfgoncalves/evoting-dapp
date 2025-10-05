@@ -1,0 +1,55 @@
+# Arquivo .gitignore universal para projetos Truffle e React
+
+# Ignorar dependências do Node.js
+# Esta é a pasta mais importante a ser ignorada.
+node_modules/
+
+# Arquivos de log gerados pelo npm ou yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Específico para Projetos Truffle
+##################################
+
+# Pasta de compilação de contratos do Truffle
+build/
+
+# Arquivos que podem conter informações sensíveis (chaves privadas, mnemonics, etc.)
+.secret
+.infura
+.etherscan
+
+# Específico para Projetos React
+#################################
+
+# Pasta de build de produção do React
+# Pode ser 'build', 'dist' ou similar, dependendo da sua configuração.
+build/
+dist/
+.next/
+
+# Arquivos de ambiente locais que não devem ser compartilhados
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Relatórios de teste e cobertura
+coverage/
+
+# Outros
+########
+
+# Arquivos de sistema operacional (macOS)
+.DS_Store
+
+# Arquivos de configuração de editores de código
+.idea/
+.vscode/
+*.swp
+
+# Arquivos de cache
+.eslintcache
+.npm
