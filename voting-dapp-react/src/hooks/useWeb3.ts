@@ -1,6 +1,11 @@
-// src/hooks/useWeb3.ts
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 export function useWeb3() {
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
@@ -18,12 +23,16 @@ export function useWeb3() {
       setSigner(s);
       setAccount(addr);
 
-      // opcional: listener de contas
-      window.ethereum.on("accountsChanged", async () => {
+      window.ethereum.on?.("accountsChanged", async () => {
         const s2 = await p.getSigner();
         const addr2 = await s2.getAddress();
         setSigner(s2);
         setAccount(addr2);
+      });
+
+      window.ethereum.on?.("chainChanged", () => {
+        // Força reload para evitar state inconsistente ao trocar de rede
+        window.location.reload();
       });
     };
     init();

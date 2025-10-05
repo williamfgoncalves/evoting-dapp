@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import MeuApp from './MeuApp'; // Lembre-se de corrigir para './app' se for o caso
+import App from './App'; // Lembre-se de corrigir para './app' se for o caso
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,6 +10,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <MeuApp />
+    <App />
   </React.StrictMode>
 );

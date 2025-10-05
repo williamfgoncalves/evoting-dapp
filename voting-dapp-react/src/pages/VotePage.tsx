@@ -1,7 +1,7 @@
-// src/pages/VotePage.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { toast } from "react-hot-toast";
 import { useWeb3 } from "../hooks/useWeb3";
 import { fetchElectionDetails, getElection, voteOnce } from "../services/elections";
 
@@ -13,7 +13,6 @@ export function VotePage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [hasVoted, setHasVoted] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const run = async () => {
@@ -21,29 +20,34 @@ export function VotePage() {
       const d = await fetchElectionDetails(provider, address);
       setDetails(d);
 
-      const contract = getElection(address, provider);
-      const hv = await contract.hasVoted(account);
-      setHasVoted(hv);
+      if (account) {
+        const contract = getElection(address, provider);
+        const hv = await contract.hasVoted(account);
+        setHasVoted(hv);
+      }
     };
     run();
   }, [provider, address, account]);
 
-  if (!provider) return <div>Conecte o MetaMask.</div>;
-  if (!details) return <div>Carregando eleição...</div>;
+  if (!provider) return <div style={{ padding: 16 }}>Conecte o MetaMask.</div>;
+  if (!details) return <div style={{ padding: 16 }}>Carregando eleição...</div>;
 
   const canVote = details.isOpen && !hasVoted;
 
   const onSubmit = async () => {
-    if (!signer || selected === null || !address) return;
+    if (!signer) return toast.error("Conecte o MetaMask.");
+    if (selected === null) return toast.error("Selecione uma opção.");
+    if (!address) return;
+
     setSubmitting(true);
-    setError("");
+    toast.loading("Enviando voto...", { id: "vote" });
     try {
       await voteOnce(signer, address, selected);
+      toast.success("Voto computado!", { id: "vote" });
       setHasVoted(true);
-      alert("Voto computado!");
       navigate("/");
     } catch (e: any) {
-      setError(e?.reason || e?.message || "Falha ao votar");
+      toast.error(e?.reason || e?.message || "Falha ao votar", { id: "vote" });
     } finally {
       setSubmitting(false);
     }
@@ -57,7 +61,8 @@ export function VotePage() {
         {dayjs.unix(details.startTime).format("YYYY-MM-DD HH:mm")} → {dayjs.unix(details.endTime).format("YYYY-MM-DD HH:mm")}
       </div>
       <div>Status: {details.hasEnded ? "Encerrada" : details.isOpen ? "Em andamento" : "À iniciar"}</div>
-      <h3>Opções</h3>
+
+      <h3 style={{ marginTop: 12 }}>Opções</h3>
       <ul>
         {details.options.map((opt: string, i: number) => (
           <li key={i}>
@@ -83,8 +88,6 @@ export function VotePage() {
       <button onClick={onSubmit} disabled={!canVote || selected === null || submitting}>
         {submitting ? "Enviando..." : "Votar"}
       </button>
-
-      {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
     </div>
   );
 }

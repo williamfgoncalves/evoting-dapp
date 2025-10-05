@@ -1,4 +1,3 @@
-// src/services/elections.ts
 import { ethers } from "ethers";
 import { ElectionFactoryABI, ElectionABI, FACTORY_ADDRESS } from "../contracts";
 
@@ -44,8 +43,8 @@ export async function createElection(
   data: {
     name: string;
     description: string;
-    startTime: number; // epoch secs
-    endTime: number; // epoch secs
+    startTime: number;
+    endTime: number;
     options: string[];
   }
 ) {
@@ -56,9 +55,9 @@ export async function createElection(
     data.startTime,
     data.endTime,
     data.options,
-    false, // isMultipleChoice
-    1,     // maxChoices
-    false  // isCommitReveal
+    false,
+    1,
+    false
   );
   return tx.wait();
 }
